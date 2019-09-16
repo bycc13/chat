@@ -5,28 +5,54 @@
             <li
                 v-for="item in privateDetail"
                 :key="item.id">
-                <ChatItem :chatInfo="item"></ChatItem>
+                <ChatItem @click.self.right="setOption(item)" :chatInfo="item"></ChatItem>
             </li>
         </ul>
         <div class="input-msg">
-            <textarea v-model="inputMsg" @keydown.enter.prevent="sendMessage" ref="message"></textarea>
-            <p class="btn" :class="{'enable':inputMsg!=''}" @click="sendMessage">{{btnInfo}}</p>
+			<textarea
+				v-model="inputText"
+				@keydown.enter.prevent="sendMessage"
+				ref="message"></textarea>
+            <p
+				class="btn"
+				:class="{'enable':inputText!=''}"
+				@click="sendMessage">
+				{{ lang.send[$store.state.lang] }}
+			</p>
         </div>
+
+		<right-option
+			:visible.sync="optionVisible"
+            :options="chatInfo.rightOption"
+			:chatId="chatInfo.chatId"
+            type="in"
+            @withdraw="onWithdraw">
+        </right-option>
     </div>
 </template>
 
 <script>
 import ChatItem from "./co-ChatItem.vue";
+import RightOption from "./co-RightOption";
+import { lang } from "../../config/constant";
+
 export default {
     name: "PrivateChat",
 
 	components: {
-		ChatItem
+		ChatItem,
+		RightOption
+	},
+
+	computed: {
+		chatUserId () {
+			return this.$route.query.chatId
+		}
 	},
 
 	data() {
 		return {
-			inputMsg: '',
+			inputText: '',
 			privateDetail: [], //私聊相关
 			toUserInfo: { //被私聊者
 				to_user: '',
@@ -37,8 +63,11 @@ export default {
 			},
 			isMyFriend: false, //他是否是我的好友
 			isHisFriend: false, //我是否是他的好友
+			optionVisible: false,
+			chatInfo: {},
 			fromUserInfo: {}, //用户自己
-			btnInfo: "发送"
+			btnInfo: "发送",
+			widthdrawInfo: "" // 撤回的信息
 		}
 	},
 
@@ -49,6 +78,19 @@ export default {
 	},
 
 	methods: {
+		setOption (val) {
+			this.chatInfo = val;
+			this.optionVisible = true;
+		},
+		// 撤回
+		onWithdraw (id) {
+			const index = this.privateDetail.findIndex((item) => {
+				item.chatId === id;
+			});
+			// 保存撤回信息，供再次修改
+			this.widthdrawInfo = this.privateDetail[index];
+			this.privateDetail.splice(index, 1);
+		},
 		//获取数据库的消息
 		getPrivateMsg() {
 			axios.get(
@@ -80,7 +122,7 @@ export default {
 		},
 		//发送信息
 		sendMessage() {
-			if (this.inputMsg.trim() == '') return
+			if (this.inputText.trim() == '') return
 			if (!this.isMyFriend) {
 				console.log('isnotMyFriend')
 				this.$message({
@@ -107,7 +149,7 @@ export default {
 				to_user: this.toUserInfo.to_user, //对方id
 				name: this.fromUserInfo.name, //自己的昵称
 				avator: this.fromUserInfo.avator, //自己的头像
-				message: this.inputMsg, //消息内容
+				message: this.inputText, //消息内容
 				type: 'private',
 				status: '1', //是否在线 0为不在线 1为在线
 				time: Date.parse(new Date()) / 1000 //时间
@@ -122,14 +164,14 @@ export default {
 				to_user: this.toUserInfo.to_user, //对方的id
 				name: this.fromUserInfo.name, //自己的昵称
 				avator: this.fromUserInfo.avator, //自己的头像
-				message: this.inputMsg, //消息内容
+				message: this.inputText, //消息内容
 				status: '1', //是否在线 0为不在线 1为在线
 				time: Date.parse(new Date()) / 1000 //时间
 			}
 			// 存此条私聊信息到数据库
 			axios.post('/api/v1/private_save_msg', data)
 				.then(res => {
-					this.inputMsg = '';
+					this.inputText = '';
 					// 存此条私聊信息到本地
 					data.time = toNomalTime(data.time)
 					console.log('saveMsgByDBdata', data)
@@ -162,7 +204,7 @@ export default {
 			})
 		},
 		// 查询此用户与我的关系
-		isFriend() {
+		/*isFriend() {
 			axios.get('/api/v1/is_friend', {
 				params: {
 					// user_id: this.fromUserInfo.user_id,
@@ -178,10 +220,14 @@ export default {
 					type: "error"
 				});
 			})
-		},
+		},*/
 		//将未读信息归零
 		resetUnred() {
-			this.$store.commit('resetUnredMutation', this.toUserInfo.to_user)
+			this.$dispatch("resetUnred")
+                .then()
+                .catch(() => {
+                    // 错误捕获
+                });
 		},
 		// 消息置底
 		refresh() {
@@ -190,10 +236,10 @@ export default {
 			}, 0)
 		}
 	},
-	created() {
-		this.toUserInfo.to_user = this.$route.params.user_id;
-		this.fromUserInfo = JSON.parse(localStorage.getItem("userInfo"));
-		this.isFriend();
+	created () {
+		// this.toUserInfo.to_user = this.$route.query.user_id;
+		// this.fromUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+		// this.isFriend();
 		this.resetUnred();
 		this.getPrivateMsg();
 		this.getMsgBySocket();
@@ -202,6 +248,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/chat.scss";
+<style lang="less" scoped>
 </style>

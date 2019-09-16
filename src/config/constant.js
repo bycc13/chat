@@ -37,3 +37,10 @@ const CHAT_RIGHT_OPTION = [{
     text: "删除聊天",
     code: 6
 }];
+
+const lang = {
+    send: {
+        ch: "发送",
+        en: "send"
+    }
+};

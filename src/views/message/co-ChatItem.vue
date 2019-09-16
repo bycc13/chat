@@ -5,7 +5,7 @@
                 :src="chatInfo.avatar"
                 class="chat-avatar">
             
-            <div class="chat-content" @click.right="setOption">
+            <div class="chat-content">
                 <span class="chat-content__name" v-if="isShowName">{{ item.userName }}</span>
                 
                 <img
@@ -21,19 +21,10 @@
                 <div v-else-if="chatInfo.type === 'video'"></div>
             </div>
         </div>
-
-        <right-option
-            :visible.sync="optionVisible"
-            :options="chatInfo.rightOption"
-            type="in"
-            @withdraw="onWithdraw">
-        </right-option>
     </div>
 </template>
 
 <script>
-    import RightOption from "./co-RightOption";
-
     export default {
         name: "chat-item",
         props: {
@@ -44,13 +35,9 @@
                 }
             }
         },
-        components: {
-            RightOption
-        },
+        components: {},
         data () {
-            return {
-                optionVisible: false
-            };
+            return {};
         },
     
         computed: {
@@ -67,15 +54,12 @@
                     // 查看大图
                 }
             },
-            onWithdraw (val) {
-                this.withdrawMsg = val;
-                
-            }
+            
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .chat-item {
         width: 100%;
         margin: 0.7rem 0;

@@ -15,6 +15,10 @@ const router = new VueRouter({
         {
             path: "/message",
             component: resolve => require(["@/views/message/Message.vue"], resolve),
+        },
+        {
+            path: "/message/privateChat/:chatId",
+            component: resolve => require(["@/views/message/PrivateChat.vue"], resolve),
         }
     ]
 });

@@ -9,6 +9,10 @@ const actions = {
     async getMessages () {
         return await Vue.axios.get("/message/getMessages");
     },
+    // 获取消息列表
+    async resetUnred (obj = {}) {
+        return await Vue.axios.post(`/message/unred/${obj.chatId}`);
+    },
     // 右键修改聊天设置
     async setRightOption (obj = {}) {
         return await Vue.axios.post("/message/getMessages", {
