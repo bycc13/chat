@@ -31,11 +31,11 @@
             </li>
         </ul>
 
-        <right-oiption
+        <right-option
             :visible.sync="optionVisible"
             :options="rightOption"
             type="out">
-        </right-oiption>
+        </right-option>
     </div>
 </template>
 
@@ -81,7 +81,7 @@ export default {
         getMessages () {
             this.$dispatch("getMessages").then(res => {
                 this.messages = JSON.parse(JSON.stringify(res.data));
-            }).catch(err => {
+            }).catch(() => {
                 // 错误捕获
             });
         }

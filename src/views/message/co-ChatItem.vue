@@ -22,12 +22,12 @@
             </div>
         </div>
 
-        <right-oiption
+        <right-option
             :visible.sync="optionVisible"
-            :options="rightOption"
+            :options="chatInfo.rightOption"
             type="in"
             @withdraw="onWithdraw">
-        </right-oiption>
+        </right-option>
     </div>
 </template>
 
@@ -38,9 +38,9 @@
         name: "chat-item",
         props: {
             chatInfo: {
-                type:Array,
+                type: Object,
                 default: () => {
-                    return [];
+                    return {};
                 }
             }
         },

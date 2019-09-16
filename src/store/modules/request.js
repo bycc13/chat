@@ -2,15 +2,15 @@ import Vue from "vue";
 
 const actions = {
     // 获取用户信息
-    async getUserInfo ({ state, commit, dispatch }) {
+    async getUserInfo () {
         return await Vue.axios.get("/user/getUserInfo");
     },
     // 获取消息列表
-    async getMessages ({ state, commit, dispatch }, obj = {}) {
+    async getMessages () {
         return await Vue.axios.get("/message/getMessages");
     },
     // 右键修改聊天设置
-    async setRightOption ({ state }, obj = {}) {
+    async setRightOption (obj = {}) {
         return await Vue.axios.post("/message/getMessages", {
             params: {
                 code: obj.code

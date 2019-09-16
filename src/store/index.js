@@ -17,15 +17,15 @@ const store = new Vuex.Store({
         loginSuccess ({ commit }, obj) {
             commit("userInfo", obj);
         },
-        // 检测是否登录，范围isLogined标识，true为已登陆，false为未登录
-        async checkLoginState ({ state, commit, dispatch }, obj) {
+        // 检测是否登录
+        async checkLoginState ({ dispatch }) {
             let userInfo = null;
             try {
                 userInfo = await dispatch("getUserInfo");
                 dispatch("loginSuccess", userInfo.data);
-                return isLogined = true;
+                return
             } catch (e) {
-                return isLogined = false;
+                // 错误捕获
             }
         }
     },

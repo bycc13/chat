@@ -43,7 +43,7 @@ export default {
                 // 删除数据库中的消息
                 this.$dispatch("setRightOption")
                 .then()
-                .catch(err => {
+                .catch(() => {
                     // 错误捕获
                 });
                 this.$emit("withdraw", val);
