@@ -42,7 +42,7 @@
     
         computed: {
             isMe () {
-                return chatInfo.userId === this.$store.state.userInfo.userId;
+                return this.chatInfo.userId === this.$store.state.userInfo.userId;
             }
         },
     

@@ -31,16 +31,17 @@
             </li>
         </ul>
 
-        <right-option
+        <message-right-option
             :visible.sync="optionVisible"
             :options="rightOption"
-            type="out">
-        </right-option>
+            type="out"
+            @delete="deleteChat">
+        </message-right-option>
     </div>
 </template>
 
 <script>
-import RightOption from "./co-RightOption";
+import MessageRightOption from "@/components/MessageRightOption";
 
 export default {
 	name: "Message",
@@ -52,7 +53,7 @@ export default {
 		}
 	},
     components: {
-        RightOption
+        MessageRightOption
     },
 	methods: {
 		routeToChat (val) {
@@ -62,7 +63,13 @@ export default {
 		setOption(val) {
 			this.rightOption = val.options;
             this.optionVisible = true;
-		},
+        },
+        deleteChat (id) {
+            const index = this.messages.findIndex((item) => {
+				item.chatId === id;
+			});
+			this.messages.splice(index, 1);
+        },
 		// // 获取私聊和群的消息
 		// getMsgBySocket() {
 		// 	socket.removeAllListeners('getPrivateMsg');
