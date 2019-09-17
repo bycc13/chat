@@ -27,7 +27,7 @@
 
 <script>
 export default {
-	name: "co-RightOption",
+	name: "MessageRightOption",
     props: {
         visible: {
             type: Boolean,

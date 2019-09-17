@@ -12,7 +12,7 @@
                 @click.right="setOption(item)"
                 @click="routeToChat(item)">
                 <div :class="['message-item__avatar', item.onTop ? 'on-top' : '']">
-                    <img :src="item.group_avator" alt="群头像" class="img">
+                    <img :src="item.avatar" alt="群头像" class="img">
                     <span class="unread" v-if="item.unread">{{item.unread}}</span>
                 </div>
 
@@ -42,6 +42,7 @@
 
 <script>
 import MessageRightOption from "@/components/MessageRightOption";
+import DATA from "./api.json";
 
 export default {
 	name: "Message",
@@ -49,7 +50,7 @@ export default {
 		return {
             optionVisible: false,
             messages: [],
-			rightOption: []
+			rightOption: {}
 		}
 	},
     components: {
@@ -86,11 +87,13 @@ export default {
 		// 	})
 		// }
         getMessages () {
-            this.$dispatch("getMessages").then(res => {
+            this.messages = messages;
+            // 动态赋值
+            /*this.$dispatch("getMessages").then(res => {
                 this.messages = JSON.parse(JSON.stringify(res.data));
             }).catch(() => {
                 // 错误捕获
-            });
+            });*/
         }
 
 	},

@@ -17,7 +17,7 @@
 				class="btn"
 				:class="{'enable':inputText!=''}"
 				@click="sendMessage">
-				{{ lang.send[$store.state.lang] }}
+				{{ $data.LANGUAGE.send[$store.state.lang] }}
 			</p>
         </div>
 
@@ -34,7 +34,6 @@
 <script>
 import ChatItem from "./co-ChatItem.vue";
 import ChatRightOption from "@/components/ChatRightOption";
-import { lang } from "@/config/constant";
 
 export default {
     name: "PrivateChat",

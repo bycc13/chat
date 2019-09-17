@@ -1,0 +1,37 @@
+{
+  "CHATS": [{
+        "userId": 1,
+        "avatar": "",
+        "userName": "yesy",
+        "message": "fsdfdfsd",
+        "time": "22222",
+        "type": "text",
+        "imageUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1568747864617&di=a7510399e31865f5a24d76d58ee34855&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201808%2F02%2F20180802115642_jetil.jpg",
+        "isShowName": true
+    }, {
+        "userId": 2,
+        "avatar": "",
+        "userName": "yesy",
+        "message": "fsdfdfsd",
+        "time": "22222",
+        "type": "image",
+        "imageUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1568747877603&di=9625847da1a1538ea1de6d90a94ac7ef&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201702%2F08%2F20170208132537_UF4rs.jpeg",
+        "isShowName": true
+    }],
+    "MESSAGES": [{
+        "chatId": 1,
+        "onTop": true,
+        "unread": 0,
+        "name": "兔八哥",
+        "message": "111222333444",
+        "avatar": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1568747864638&di=c3921e36b216dac93fa7d2c5fec667c8&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201902%2F19%2F20190219195511_bffuz.jpeg"
+    }, {
+        "chatId": 2,
+        "onTop": false,
+        "unread": 3,
+        "name": "一个",
+        "message": "什么什么什么什么什么啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊",
+        "avatar": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1568747864638&di=c3921e36b216dac93fa7d2c5fec667c8&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201902%2F19%2F20190219195511_bffuz.jpeg"
+    }]
+}
+

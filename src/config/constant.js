@@ -1,4 +1,4 @@
-const MESSAGE_RIGHT_OPTION = [{
+export const MESSAGE_RIGHT_OPTION = [{
     text: "置顶",
     code: 1
 }, {
@@ -18,7 +18,7 @@ const MESSAGE_RIGHT_OPTION = [{
     code: 6
 }];
 
-const CHAT_RIGHT_OPTION = [{
+export const CHAT_RIGHT_OPTION = [{
     text: "复制",
     code: 1
 }, {
@@ -38,7 +38,7 @@ const CHAT_RIGHT_OPTION = [{
     code: 6
 }];
 
-const lang = {
+export const LANGUAGE = {
     send: {
         ch: "发送",
         en: "send"

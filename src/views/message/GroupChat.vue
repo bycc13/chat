@@ -34,7 +34,7 @@
 <script>
 import ChatItem from "./co-ChatItem.vue";
 import ChatRightOption from "@/components/ChatRightOption";
-import { lang } from "@/config/constant";
+import { LANGUAGE } from "@/config/constant";
 
 export default {
     name: "GroupChat",
