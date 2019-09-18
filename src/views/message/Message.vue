@@ -2,9 +2,9 @@
     <!-- 消息列表 -->
     <div class="wrapper">
         <!-- 消息列表为空 -->
-        <div class="empty">none</div>
+        <div class="empty" v-if="isEmpty">none</div>
 
-        <ul class="message">
+        <ul class="message" v-else>
             <li
                 class="message-item"
                 v-for="item in messages"
@@ -17,20 +17,19 @@
                 </div>
 
                 <div class="message-item__content">
-                    <div>
-                        <span>{{item.name}}</span>
-                        <span>{{item.time}}</span>
+                    <div class="top-line">
+                        <span class="name">{{item.name}}</span>
+                        <span class="time">{{item.time}}</span>
                     </div>
 
-                    <div class="message">
-                        <span>{{item.message}}</span>
-                        <!-- 免打扰图标 -->
-                        <span></span>
-                    </div>
+                    <p class="bottom-line">
+                        {{item.message}}
+                    </p>
                 </div>
             </li>
         </ul>
 
+        <!-- 右击设置 -->
         <message-right-option
             :visible.sync="optionVisible"
             :options="rightOption"
@@ -42,7 +41,8 @@
 
 <script>
 import MessageRightOption from "@/components/MessageRightOption";
-import DATA from "./api.json";
+// todo: 动态获取后可替换
+import DATA from "@/config/data.json";
 
 export default {
 	name: "Message",
@@ -56,9 +56,14 @@ export default {
     components: {
         MessageRightOption
     },
+    computed: {
+        isEmpty () {
+            return this.messages.length === 0 ? true : false;
+        }
+    },
 	methods: {
 		routeToChat (val) {
-			const path = val.type === "private" ? `/privateChat/${val.id}` : `/groupChat/${val.id}`
+			const path = val.type === "private" ? `/privateChat/${val.chatId}` : `/groupChat/${val.chatId}`
 			this.$router.push(path)
 		},
 		setOption(val) {
@@ -71,29 +76,14 @@ export default {
 			});
 			this.messages.splice(index, 1);
         },
-		// // 获取私聊和群的消息
-		// getMsgBySocket() {
-		// 	socket.removeAllListeners('getPrivateMsg');
-		// 	socket.removeAllListeners('getGroupMsg');
-		// 	socket.on('getPrivateMsg', (data) => {
-		// 		console.log('首页获取私聊消息', data);
-		// 		data.type = 'private'
-		// 		this.$store.commit('updateListMutation', data)
-		// 	})
-		// 	socket.on('getGroupMsg', (data) => {
-		// 		console.log('首页获取群消息', data);
-		// 		data.type = 'group'
-		// 		this.$store.commit('updateListMutation', data)
-		// 	})
-		// }
         getMessages () {
-            this.messages = messages;
+            this.messages = DATA.MESSAGES;
             // 动态赋值
-            /*this.$dispatch("getMessages").then(res => {
+            this.$dispatch("getMessages").then(res => {
                 this.messages = JSON.parse(JSON.stringify(res.data));
             }).catch(() => {
                 // 错误捕获
-            });*/
+            });
         }
 
 	},
@@ -105,82 +95,57 @@ export default {
 
 <style lang="less" scoped>
 .wrapper {
-    // height: 100vh;
-    padding-top: 0.8rem;
+    padding-top: .2rem;
     background-color: #fff;
-    z-index: 1;
-    ul {
+    .message {
         background-color: #fff;
-        padding-bottom: 0.5rem;
-        li {
-            display: -webkit-box;
-            display: -ms-flexbox;
+        padding-bottom: .5rem;
+        &-item {
             display: flex;
-            align-items: center;
-            margin: 0 0.2rem;
-            list-style-type: none;
-            a {
+            margin: 0 .2rem;
+            height: 1.3rem;
+            border-bottom: 1px solid #eee;
+            &__avatar {
                 position: relative;
                 .img {
-                    width: 0.8rem;
-                    height: 0.8rem;
-                    margin-right: 0.04rem;
+                    width: 1rem;
+                    height: 1rem;
+                    margin-right: .05rem;
                     border-radius: 50%;
-                    display: inline-block;
                 }
-                span {
-                    font-size: 0.2rem;
-                    border-radius: 50%;
-                    padding: 0 0.088rem;
+                .unread {
                     position: absolute;
-                    top: 0.2rem;
-                    left: 0.7rem;
-                    color: #fff;
-                    z-index: 2;
-                }
-                .private-unread {
-                    background-color: red;
-                }
-                .group-unread {
-                    background-color: #98d1f2;
-                }
-                //  ::after {
-                //   content: "";
-                //   width: 0.26rem;
-                //   height: 0.26rem;
-                //   display: inline-block;
-                //   border-radius: 50%;
-                //   background-color: red;
-                //   position: absolute;
-                //   left: -0.08rem;
-                //   z-index: -1;
-                // }
-            }
-            .content {
-                display: inline-block;
-                margin-left: 0.2rem;
-                max-width: 80%;
-                .title {
-                    font-size: 0.32rem;
-                    span {
-                        font-size: 0.28rem;
-                        color: #676767;
-                        position: absolute;
-                        right: 0.5rem;
-                    }
-                }
-                .message {
-                    color: #676767;
-                    font-size: 0.24rem;
-                    max-height: 0.72rem;
-                    overflow: hidden;
-                    position: relative;
-                }
-                .message :after {
-                    content: "...";
-                    position: absolute;
-                    bottom: 0;
                     right: 0;
+                    top: -.1rem;
+                    width: .4rem;
+                    height: .4rem;
+                    background: red;
+                    border-radius: 50%;
+                    color: #fff;
+                    font-size: .3rem;
+                }
+            }
+            &__content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: .2rem;
+                width: calc(~"100% - 1.1rem");
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                .top-line,
+                .bottom-line {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .top-line {
+                    margin-bottom: .1rem;
+                    font-size: .4rem;
+                }
+                .bottom-line {
+                    font-size: .2rem;
+                    line-height: .3rem;
                 }
             }
         }

@@ -1,4 +1,5 @@
 <template>
+    <!-- 聊天记录右击设置 -->
     <div class="option-wrapper" v-show="visible">
         <ul class="option">
             <li

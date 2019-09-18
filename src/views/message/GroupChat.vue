@@ -8,40 +8,37 @@
                 <ChatItem @click.self.right="setOption(item)" :chatInfo="item"></ChatItem>
             </li>
         </ul>
-        <div class="input-msg">
-			<textarea
-				v-model="inputText"
-				@keydown.enter.prevent="sendMessage"
-				ref="message"></textarea>
-            <p
-				class="btn"
-				:class="{'enable':inputText!=''}"
-				@click="sendMessage">
-				{{ lang.send[$store.state.lang] }}
-			</p>
-        </div>
 
+		<!-- 发送消息 -->
+		<send-box
+			:userChatId="groupChatId"
+			@successSend="successSend">
+		</send-box>
+
+		<!-- 右击设置 -->
 		<chat-right-option
 			:visible.sync="optionVisible"
             :options="chatInfo.rightOption"
 			:chatId="chatInfo.chatId"
-            type="in"
             @withdraw="onWithdraw">
         </chat-right-option>
     </div>
 </template>
 
 <script>
-import ChatItem from "./co-ChatItem.vue";
+import ChatItem from "@/components/ChatItem";
 import ChatRightOption from "@/components/ChatRightOption";
-import { LANGUAGE } from "@/config/constant";
+import SendBox from "@/components/SendBox";
+// todo: 动态获取后可替换
+import DATA from "@/config/data.json";
 
 export default {
     name: "GroupChat",
 
 	components: {
 		ChatItem,
-		ChatRightOption
+		ChatRightOption,
+		SendBox
 	},
 
 	computed: {
@@ -81,6 +78,9 @@ export default {
 			this.chats.splice(index, 1);
 		},
 		getChats () {
+			// todo:动态获取后可替换
+			this.chats = DATA.CHATS.records;
+			// 动态获取聊天记录
             this.$dispatch("getGroupChat", {
                 chatId: this.chatId
             }).then(res => {
@@ -89,20 +89,9 @@ export default {
                 // 错误捕获
             });
 		},
-		//发送信息
-		sendMessage () {
-			const data = {
-				from: this.$store.state.userInfo.userId, // 自己id
-				to: this.groupChatId, // 对方id
-				message: this.inputText, //消息内容
-				time: Date.parse(new Date()) / 1000 // 发送时间
-			}
-			this.$dispatch("senMessage", {
-				obj: data
-			}).then()
-			.catch(() => {
-				// 错误捕获
-			});
+		// 信息发送成功
+		successSend (val) {
+			this.chats.push(val);
 		},
 		//将未读信息归零
 		resetUnred() {

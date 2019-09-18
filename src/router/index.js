@@ -13,12 +13,16 @@ const router = new VueRouter({
     },
     routes: [
         {
-            path: "/message",
+            path: "/",
             component: resolve => require(["@/views/message/Message.vue"], resolve),
         },
         {
-            path: "/message/privateChat/:chatId",
+            path: "/privateChat/:chatId",
             component: resolve => require(["@/views/message/PrivateChat.vue"], resolve),
+        },
+        {
+            path: "/groupChat/:chatId",
+            component: resolve => require(["@/views/message/GroupChat.vue"], resolve),
         }
     ]
 });

@@ -1,4 +1,5 @@
 <template>
+    <!-- 消息列表右击设置 -->
     <div class="wrapper" v-show="visible">
         <ul class="option">
             <li
